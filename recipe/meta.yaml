@@ -1,5 +1,5 @@
 {% set name = "mbedtls" %}
-{% set version = "3.6.3.1" %}
+{% set version = "4.0.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/Mbed-TLS/mbedtls/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 5344d16a64932b9956e2c9422fc5925ce480d570732f4379226888fffc19ed00
+  sha256: f4460881faaa71bc573f473bb5c4493af28bbdb84b281d119ef8978184c3d291
 
 build:
   number: 0
