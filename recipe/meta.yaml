@@ -27,8 +27,8 @@ requirements:
 
 test:
   commands:
-    - if not exist %LIBRARY_INC%\\mbedtls\\md5.h exit 1  # [win]
-    - test -f ${PREFIX}/include/mbedtls/md5.h  # [not win]
+    - if not exist %LIBRARY_INC%\\mbedtls\\private\\md5.h exit 1  # [win]
+    - test -f ${PREFIX}/include/mbedtls/private/md5.h  # [not win]
     - if not exist %LIBRARY_LIB%\\mbedcrypto.lib exit 1  # [win]
     - test -f ${PREFIX}/lib/libmbedcrypto.so  # [linux]
     - test -f ${PREFIX}/lib/libmbedcrypto.dylib  # [osx]
