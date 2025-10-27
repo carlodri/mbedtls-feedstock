@@ -8,6 +8,8 @@ package:
 source:
   url: https://github.com/Mbed-TLS/mbedtls/releases/download/mbedtls-{{ version }}/mbedtls-{{ version }}.tar.bz2
   sha256: 2f3a47f7b3a541ddef450e4867eeecb7ce2ef7776093f3a11d6d43ead6bf2827
+  patches:
+    - invalid_gcc_14.3_warning_array_bounds_in_mbedtls_xor.patch  # [linux-aarch64]
 
 build:
   number: 0
