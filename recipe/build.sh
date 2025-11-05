@@ -23,7 +23,7 @@ elif [[ "$target_platform" == osx-64 ]]; then
 		-DENABLE_PROGRAMS=OFF \
 		-DENABLE_TESTING=OFF \
   		-D_POSIX_C_SOURCE=199309L
-elif [[ "$target_platform" == linux-aarch64 ]]; then
+else	
  	cmake -B build -S . \
 		${CMAKE_ARGS} \
 		-DCMAKE_INSTALL_PREFIX=$PREFIX \
@@ -35,18 +35,6 @@ elif [[ "$target_platform" == linux-aarch64 ]]; then
 		-DENABLE_TESTING=OFF \
 		-DCMAKE_C_FLAGS="-Wno-stringop-overflow -Wno-error=array-bounds" \
     	-DCMAKE_CXX_FLAGS="-Wno-stringop-overflow -Wno-error=array-bounds"
-else	
- 	cmake -B build -S . \
-		${CMAKE_ARGS} \
-		-DCMAKE_INSTALL_PREFIX=$PREFIX \
-		-DCMAKE_INSTALL_LIBDIR=lib \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_VERBOSE_MAKEFILE=ON \
-		-DUSE_SHARED_MBEDTLS_LIBRARY=ON \
-		-DENABLE_PROGRAMS=OFF \
-		-DENABLE_TESTING=OFF \
-		-DCMAKE_C_FLAGS="-Wno-stringop-overflow" \
-    	-DCMAKE_CXX_FLAGS="-Wno-stringop-overflow"
 fi
 
 cmake --build build
