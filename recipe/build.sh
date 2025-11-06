@@ -33,8 +33,8 @@ else
 		-DUSE_SHARED_MBEDTLS_LIBRARY=ON \
 		-DENABLE_PROGRAMS=OFF \
 		-DENABLE_TESTING=OFF \
-		-DCMAKE_C_FLAGS="-Wno-stringop-overflow" \
-    	-DCMAKE_CXX_FLAGS="-Wno-stringop-overflow"
+		-DCMAKE_C_FLAGS="-Wno-stringop-overflow -Wno-error=array-bounds" \
+    	-DCMAKE_CXX_FLAGS="-Wno-stringop-overflow -Wno-error=array-bounds"
 fi
 
 cmake --build build
