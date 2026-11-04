@@ -11,6 +11,11 @@ package:
 source:
   url: https://github.com/Mbed-TLS/mbedtls/releases/download/mbedtls-${{ version }}/mbedtls-${{ version }}.tar.bz2
   sha256: 2bed9d713b4668f76553b097e72b8aa30bc8f112a940d7ae228d524bbde6ffea
+  patches:
+    # Mbed TLS does not support DLLs with MSVC: import the data that the
+    # DLLs and their consumers use from another DLL
+    - if: win
+      then: windows-dll-data-imports.patch
 
 build:
   number: 2

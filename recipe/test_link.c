@@ -1,4 +1,5 @@
-/* Uses a function from each of tfpsacrypto, mbedx509, and mbedtls */
+/* Uses a function from each of tfpsacrypto, mbedx509, and mbedtls, and data
+ * from mbedx509 (which must be imported from the DLL on Windows) */
 #include <stdio.h>
 #include <mbedtls/ssl.h>
 #include <mbedtls/version.h>
@@ -15,6 +16,10 @@ int main(void) {
     mbedtls_x509_crt_free(&crt);
     mbedtls_ssl_init(&ssl);
     mbedtls_ssl_free(&ssl);
+
+    if (mbedtls_x509_crt_profile_default.rsa_min_bitlen < 2048) {
+        return 1;
+    }
 
     return psa_crypto_init() == PSA_SUCCESS ? 0 : 1;
 }
