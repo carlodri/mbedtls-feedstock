@@ -1,3 +1,29 @@
+diff -ru a/include/mbedtls/ssl.h b/include/mbedtls/ssl.h
+--- include/mbedtls/ssl.h
++++ include/mbedtls/ssl.h
+@@ -3846,11 +3846,21 @@
+     }
+ 
+ #if defined(MBEDTLS_DEBUG_C)
++/* conda-forge: the Windows package ships only DLLs, so data defined in the
++ * mbedtls DLL must be exported by it and imported by code outside it. */
++#if defined(_WIN32) && defined(MBEDTLS_SSL_BUILDING_DLL)
++#define MBEDTLS_SSL_DATA_API __declspec(dllexport)
++#elif defined(_WIN32)
++#define MBEDTLS_SSL_DATA_API __declspec(dllimport)
++#else
++#define MBEDTLS_SSL_DATA_API
++#endif
++
+ /**
+  * List of known "TLS ID" <-> "group name".
+  * #MBEDTLS_SSL_IANA_TLS_GROUPS_INFO is used to initialized the list.
+  */
+-extern mbedtls_ssl_iana_tls_group_info_t mbedtls_ssl_iana_tls_group_info[];
++extern MBEDTLS_SSL_DATA_API mbedtls_ssl_iana_tls_group_info_t mbedtls_ssl_iana_tls_group_info[];
+ #endif /* MBEDTLS_DEBUG_C */
+ 
+ /**
 diff -ru a/include/mbedtls/x509_crt.h b/include/mbedtls/x509_crt.h
 --- include/mbedtls/x509_crt.h
 +++ include/mbedtls/x509_crt.h
@@ -63,7 +89,7 @@ diff -ru a/library/CMakeLists.txt b/library/CMakeLists.txt
      target_compile_options(${mbedtls_target} PRIVATE ${LIBS_C_FLAGS})
      set_target_properties(${mbedtls_target} PROPERTIES VERSION ${MBEDTLS_VERSION} SOVERSION ${MBEDTLS_TLS_SOVERSION})
      target_link_libraries(${mbedtls_target} PUBLIC ${libs} ${mbedx509_target})
-+    target_compile_definitions(${mbedtls_target} PRIVATE MBEDTLS_CT_ZERO_DLLIMPORT)
++    target_compile_definitions(${mbedtls_target} PRIVATE MBEDTLS_SSL_BUILDING_DLL MBEDTLS_CT_ZERO_DLLIMPORT)
  
      if(GEN_FILES)
          add_dependencies(${mbedx509_target}
