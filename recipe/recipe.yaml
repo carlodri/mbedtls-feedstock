@@ -34,29 +34,6 @@ requirements:
     - ${{ pin_subpackage('mbedtls', upper_bound='x.x') }}
 
 tests:
-  - script:
-      - if: win
-        then:
-          - if not exist %LIBRARY_BIN%\\tfpsacrypto.dll exit 1
-          - if not exist %LIBRARY_BIN%\\libmbedcrypto.dll exit 1
-          - if not exist %LIBRARY_BIN%\\mbedx509.dll exit 1
-          - if not exist %LIBRARY_BIN%\\mbedtls.dll exit 1
-          - if not exist %LIBRARY_LIB%\\tfpsacrypto.lib exit 1
-          - if not exist %LIBRARY_LIB%\\libmbedcrypto.lib exit 1
-          - if not exist %LIBRARY_LIB%\\mbedx509.lib exit 1
-          - if not exist %LIBRARY_LIB%\\mbedtls.lib exit 1
-      - if: linux
-        then:
-          - test -f ${PREFIX}/lib/libtfpsacrypto.so
-          - test -f ${PREFIX}/lib/libmbedcrypto.so
-          - test -f ${PREFIX}/lib/libmbedx509.so
-          - test -f ${PREFIX}/lib/libmbedtls.so
-      - if: osx
-        then:
-          - test -f ${PREFIX}/lib/libtfpsacrypto.dylib
-          - test -f ${PREFIX}/lib/libmbedcrypto.dylib
-          - test -f ${PREFIX}/lib/libmbedx509.dylib
-          - test -f ${PREFIX}/lib/libmbedtls.dylib
   # Link a program against the installed libraries and run it. On Windows,
   # also check that the .lib files are import libraries, i.e. that the
   # program depends on the DLLs instead of linking Mbed TLS statically.
@@ -78,7 +55,14 @@ tests:
         else:
           - ${CC} ${CFLAGS} -I${PREFIX}/include test_link.c -o test_link ${LDFLAGS} -L${PREFIX}/lib -Wl,-rpath,${PREFIX}/lib -lmbedtls -lmbedx509 -ltfpsacrypto
           - ./test_link
+  # On Windows, `lib` checks both the DLL in Library/bin and the import
+  # library in Library/lib
   - package_contents:
+      lib:
+        - tfpsacrypto
+        - libmbedcrypto
+        - mbedx509
+        - mbedtls
       include:
         - mbedtls/private/md5.h
 
