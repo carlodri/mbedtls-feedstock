@@ -3,6 +3,12 @@ set -ex
 
 mkdir build
 
+# The compiler activation may pass bare tool names, e.g.
+# -DCMAKE_AR=x86_64-conda-linux-gnu-ar. Mbed TLS requires CMake 3.5.1, which
+# leaves CMP0125 unset, so CMake would resolve those names against the current
+# directory instead of searching PATH.
+CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_POLICY_DEFAULT_CMP0125=NEW"
+
 if [[ "$target_platform" == osx-arm64 ]]; then
 	cmake -B build -S . \
 		${CMAKE_ARGS} \
